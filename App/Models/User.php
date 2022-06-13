@@ -61,7 +61,8 @@ class User extends \Core\Model
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
             date_default_timezone_set('America/Sao_Paulo');
-            $this-> date = date('Y-m-d H:i:s');
+            $t = time();
+            $this-> date = $t; 
 
             $sql = 'INSERT INTO user (email,password_hash,permisson_level,creation_date) 
                     VALUES (:email, :password_hash, :permisson_level, :creation_date)';
