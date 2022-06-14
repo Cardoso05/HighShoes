@@ -64,7 +64,7 @@ class User extends \Core\Model
             $t = time();
             $this-> date = $t; 
 
-            $sql = 'INSERT INTO user (email,password_hash,permisson_level,creation_date) 
+            $sql = 'INSERT INTO account (email,password_hash,permisson_level,creation_date) 
                     VALUES (:email, :password_hash, :permisson_level, :creation_date)';
 
             $db = static::getDB();
@@ -122,7 +122,7 @@ class User extends \Core\Model
 
     public static function emailExists($email)
     {
-        $sql = 'SELECT * FROM user WHERE email = :email';
+        $sql = 'SELECT * FROM account WHERE email = :email';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
