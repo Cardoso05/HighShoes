@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 /**
@@ -12,42 +13,35 @@ class Config
      * Database host
      * @var string
      */
-     const DB_HOST = 'localhost';
+    public const DB_HOST = 'ec2-52-72-99-110.compute-1.amazonaws.com';
 
     /**
      * Database name
      * @var string
      */
-     const DB_NAME = 'postgres';
+    public const DB_NAME = 'depprhnf10llrd';
 
     /**
      * Database Port
      * @var string
      */
-     const DB_PORT = '5432';
+    public const DB_PORT = '5432';
 
     /**
      * Database user
      * @var string
      */
-     const DB_USER = 'postgres';
+    public const DB_USER = 'qgievlegxixaoq';
 
     /**
      * Database password
      * @var string
      */
-     const DB_PASSWORD = 'familia01';
+    public const DB_PASSWORD = '552d04b2eea0ec8358d8752990ee01a0aab581bf93503b11126983e7bb475c0c';
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
-     const SHOW_ERRORS = true;
-
-    /**
-     * Secret key for hashing
-     * @var boolean
-     *  
-     */    
-    const SECRET_KEY = 'OjMkQCnVBQP5ht0IAMBtZElhJmGMN0pQ';
+    public const SHOW_ERRORS = true;
 }
