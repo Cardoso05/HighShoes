@@ -1,21 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Sing Up{% endblock %}
+{% block title %}Reset Pasword{% endblock %}
 
 {% block footer %}
 
     <script src="/js/hideShowPassword.min.js"></script>
     <script src="/js/app.js"></script>
-
     <script>
         $(document).ready(function() {
-            $('#formSignup').validate({
+            $('#formPassword').validate({
                 rules: {
-                    email: {
-                        required: true,
-                        email: true,
-                        remote: '/account/validate-email'
-                    },
                     password: {
                         required: true,
                         minlength: 6,
@@ -43,7 +37,7 @@
 
 {% block body %}
 
-    <h1>Sign Up</h1>
+    <h1>Reset password</h1>
 
     {% if user.errors is not empty %}
 
@@ -59,18 +53,16 @@
     {% endif %}
 
 
-    <form action="/signup/create" method="post" id="formSignup">
+    <form  method="post" id="formPassword" action="/password/reset-password">
 
-        <div>
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" type="email" autofocus required>
-        </div>
+        <input type="hidden" name="token" value="{{ token }}"/>
+
         <div>
             <label for="inputPassword">Password</label>
             <input type="password" id="inputPassword" name="password" placeholder="Password" required >
         </div>
 
-        <button type="submit">Sign Up</button>
+        <button type="submit">Reset password</button>
     </form>
 
 {% endblock %}

@@ -51,4 +51,18 @@ class Config
      *  
      */    
     const SECRET_KEY = 'OjMkQCnVBQP5ht0IAMBtZElhJmGMN0pQ';
+
+    /**
+     * Mailgun API Key
+     * 
+     * @var string
+     */
+    const MAILGUN_API_KEY = '20bf292d94f2e4ee0790a3f57113a436-4f207195-fcbe04e0';
+
+    /**
+     * Mailgun domain
+     * 
+     * @var string
+     */
+    const MAILGUN_DOMAIN =  'sandbox3427b6bfa5264f13b682608a530418a3.mailgun.org';
 }
