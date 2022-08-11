@@ -63,12 +63,16 @@ class User extends \Core\Model
         if (empty($this->errors)) {
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
+            $token = new Token();
+            $hashed_token = $token->getHash();
+            $this->activation_token = $token->getValue();
+
             date_default_timezone_set('America/Sao_Paulo');
             $t = time();
             $this-> date = $t; 
 
-            $sql = 'INSERT INTO account (email,password_hash,permisson_level,creation_date) 
-                    VALUES (:email, :password_hash, :permisson_level, :creation_date)';
+            $sql = 'INSERT INTO account (email,password_hash,permisson_level,creation_date,activation_hash) 
+                    VALUES (:email, :password_hash, :permisson_level, :creation_date, :activation_hash)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -77,7 +81,8 @@ class User extends \Core\Model
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':permisson_level', $this-> permisson_level, PDO::PARAM_STR);
             $stmt->bindValue(':creation_date', $this-> date, PDO::PARAM_STR);
-
+            $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
+            
             return $stmt->execute();
         }
 
@@ -171,7 +176,7 @@ class User extends \Core\Model
     {
         $user = static::findByEmail($email);
 
-        if ($user) {
+        if ($user && $user->is_active) {
            if (password_verify($password, $user->password_hash)) {
                 return $user;
            }
@@ -243,7 +248,7 @@ class User extends \Core\Model
 
             if ($user->startPasswordReset()){
                 
-                $user->sendPassowrdResetEmail();
+                $user->sendPasswordResetEmail();
 
             }
 
@@ -258,12 +263,14 @@ class User extends \Core\Model
     {
         $token = new Token();
         $hashed_token = $token->getHash();
+        $this->password_reset_token = $token->getValue();
+
 
         $expiry_timestamp = time() + 60 * 60 * 2; // 2 hours from now
 
-        $sql = 'UPDATE user
+        $sql = 'UPDATE account
                 SET password_reset_hash = :token_hash,
-                    password_rest_expires_at = :expires_at
+                    password_reset_expires_at = :expires_at
                 WHERE id = :id';
 
         $db = static::getDB();
@@ -281,7 +288,7 @@ class User extends \Core\Model
      * 
      * @return void
      */
-    protected function sendPassowrdResetEmail()
+    protected function sendPasswordResetEmail()
     {
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/password/reset/' . $this->password_reset_token;
 
@@ -303,7 +310,7 @@ class User extends \Core\Model
         $token = new Token($token);
         $hashed_token = $token->getHash();
 
-        $sql = 'SELECT * FROM user
+        $sql = 'SELECT * FROM account
                 WHERE password_reset_hash = :token_hash';
         
         $db = static::getDB();
@@ -343,9 +350,9 @@ class User extends \Core\Model
 
         if (empty($this->errors)) {
             
-            $password_hash = password_hash($this->passwoord,PASSWORD_DEFAULT);
+            $password_hash = password_hash($this->password,PASSWORD_DEFAULT);
 
-            $sql = 'UPDATE user
+            $sql = 'UPDATE account
                     SET password_hash = :password_hash,
                         password_reset_hash = NULL,
                         password_reset_expires_at = NULL
@@ -361,5 +368,45 @@ class User extends \Core\Model
         }
 
         return false;
+    }
+    /** 
+     * Send password reset instructions in an email to the user
+     * 
+     * @return void
+     */
+    public function sendActivationEmail()
+    {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
+
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
+
+        Mail::send($this->email, 'Account activation', $text, $html);
+    }
+
+    /**
+     * Acitvate the user account with the specified activation token
+     * 
+     * @param string $value Activation token from the URL
+     * 
+     * @return void
+     *
+     */
+    public static function activate($value)
+    {
+        $token = new Token($value);
+        $hashed_token = $token->getHash();
+
+        $sql = "UPDATE account
+                SET is_active = 't',
+                    activation_hash = null
+                    WHERE activation_hash = :hashed_token";
+        
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        
+        $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
+
+        $stmt->execute();
     }
 }

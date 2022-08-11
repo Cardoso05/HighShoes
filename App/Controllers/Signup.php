@@ -32,6 +32,8 @@ use App\Models\User;
          $user = new User($_POST);
 
          if ($user->save()) {
+
+            $user->sendActivationEmail();
             
             $this->redirect('/signup/success');
 
@@ -50,4 +52,24 @@ use App\Models\User;
      {
          View::renderTemplate('Signup/success.html');
      }
- }
+    /**
+     * Activate a new account
+     * 
+     * @return void
+     */
+    public function activateAction()
+    {
+        User::activate($this->route_params['token']);
+
+        $this->redirect('/signup/activated');
+    }
+    /**
+     * Show the activation succes page
+     * 
+     * @return void
+     */
+    public function activatedAction()
+    {
+        View::renderTemplate('Signup/activated.html');
+    }
+}

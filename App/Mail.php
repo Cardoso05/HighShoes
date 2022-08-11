@@ -30,7 +30,7 @@ use App\Config;
 
         // Compose and send,the message
         $mg->sendMessage($domain, array(
-            'from' => 'sandbox3427b6bfa5264f13b682608a530418a3.mailgun.org',
+            'from' => 'zekkacardoso18@gmail.com',
             'to' => $to,
             'subject' => $subject,
             'text' => $text,

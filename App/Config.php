@@ -9,7 +9,7 @@ namespace App;
  */
 class Config
 {
-    /**
+/**
      * Database host
      * @var string
      */
@@ -47,22 +47,22 @@ class Config
 
     /**
      * Secret key for hashing
-     * @var boolean
+     * @var string
      *  
      */    
     const SECRET_KEY = 'OjMkQCnVBQP5ht0IAMBtZElhJmGMN0pQ';
 
     /**
-     * Mailgun API Key
-     * 
+     * Mailgun key
      * @var string
      */
-    const MAILGUN_API_KEY = '20bf292d94f2e4ee0790a3f57113a436-4f207195-fcbe04e0';
-
+    const MAILGUN_API_KEY = 'e00e4563637b579854c24f1e52ef81ce-2bab6b06-49477af0';
+    
     /**
      * Mailgun domain
-     * 
      * @var string
      */
-    const MAILGUN_DOMAIN =  'sandbox3427b6bfa5264f13b682608a530418a3.mailgun.org';
+    const MAILGUN_DOMAIN = 'sandbox40d9f99ede264346b0f98aeff86669a7.mailgun.org';
+
+
 }
