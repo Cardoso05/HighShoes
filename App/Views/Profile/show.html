@@ -6,10 +6,24 @@
 
     <h1>Profile</h1>
 
-     <dl>
-        <dt>Email</dt>
-        <dd>{{ user.email }}</dd>
-    </dl> 
+      <dl>
+         <dt>Name</dt>
+         <dd>{{ user.name }}</dd>
+      </dl>
+      <dl>
+         <dt>Email</dt>
+         <dd>{{ user.email }}</dd>
+      </dl> 
+      <dl>
+         <dt>Cpf</dt>
+         <dd>{{ user.cpf }}</dd>
+      </dl> 
+      <dl>
+         <dt>Birth Date</dt>
+         <dd>{{ user.birth_date }}</dd>
+      </dl> 
+
+ 
 
     <a href="/profile/edit">Edit</a>
  {% endblock %}

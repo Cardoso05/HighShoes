@@ -6,26 +6,55 @@
 
     <script src="/js/hideShowPassword.min.js"></script>
     <script src="/js/app.js"></script>
-
+    <script src="/js/validCpf.js"></script>
+    <script src="/js/date.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
     <script>
+
         $(document).ready(function() {
+
+            var userId = '{{ user.id }}';
+
+            //Format inputs
+            $("[name=birthDate]").mask('99/99/9999');
+            $("[name=cpf]").mask('999.999.999-99');
+
+            //Validate inputs
             $('#formProfile').validate({
                 rules: {
                     email: {
                         required: true,
                         email: true,
-                        remote: '/account/validate-email'
+                        remote: {
+                            url:'/account/validate-email',
+                            data: {
+                                ignore_id: function(){
+                                    return userId;
+                                }
+                            }
+                        }
                     },
                     password: {
-                        required: true,
                         minlength: 6,
                         validPassword: true
+                    },
+                    cpf: {
+                        cpf: true,
+                        required: true
+                    },
+                    birthDate: {
+                        required: true,
+                        date: true
                     }
                 },
                 messages: {
                     email: {
                         remote: 'email already taken'
+                    },
+                    cpf: {
+                        cpf: 'CPF Invalid'
                     }
+
                 }
             });
 
@@ -59,15 +88,30 @@
     {% endif %}
 
 
-    <form method="post" id="formProfile">
+    <form method="post" id="formProfile" action="/profile/update">
 
+        <div>
+            <label for="inputName">Full Name</label>
+            <input type="text" id="inputName" name="name" placeholder="name" value="{{user.name}}" required>
+        </div>
         <div>
             <label for="inputEmail">Email address</label>
             <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" type="email" required>
         </div>
         <div>
+            <label for="inputCpf">Cpf</label>
+            <input type="inputCpf" name="cpf" placeholder="Cpf" value="{{ user.cpf }}" type="text" required> 
+        </div>
+        <div>
+        <div>
+            <label for="inputBirthDate">Birth Date</label>
+            <input type="inputBirthDate" name="birthDate" placeholder="Birth Date" value="{{ user.birth_date }}" type="text">
+        </div>
+        </div>
+        <div>
             <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required >
+            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" >
+            <span id="helpBlock"> Leave blank to keep current passoword</span>
         </div>
 
         <button type="submit">Save</button>
