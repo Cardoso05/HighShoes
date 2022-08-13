@@ -9,17 +9,17 @@ namespace App;
  */
 class Config
 {
-/**
+    /**
      * Database host
      * @var string
      */
-    public const DB_HOST = 'ec2-52-72-99-110.compute-1.amazonaws.com';
+    public const DB_HOST = 'localhost';
 
     /**
      * Database name
      * @var string
      */
-    public const DB_NAME = 'depprhnf10llrd';
+    public const DB_NAME = 'postgres';
 
     /**
      * Database Port
@@ -31,20 +31,19 @@ class Config
      * Database user
      * @var string
      */
-    public const DB_USER = 'qgievlegxixaoq';
+    public const DB_USER = 'postgres';
 
     /**
      * Database password
      * @var string
      */
-    public const DB_PASSWORD = '552d04b2eea0ec8358d8752990ee01a0aab581bf93503b11126983e7bb475c0c';
+    public const DB_PASSWORD = 'familia01';
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
     public const SHOW_ERRORS = true;
-
     /**
      * Secret key for hashing
      * @var string
